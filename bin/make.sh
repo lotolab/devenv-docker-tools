@@ -10,6 +10,9 @@ EC_CMD=
 PULL_IMAGE_NAME=
 IMG_VERSION=latest
 IS_OFFICAIL=false
+IS_WIN=true
+MNT_BASE_DIR=
+
 
 
 ARGS=$(getopt -o 'hm:n:v::' --long 'help,name:,mount:,version::' -n "$0" -- "$@")
@@ -117,8 +120,13 @@ fi
 function export_mount_base_vol(){
   if [[ "$BASE_VOL" =~ ^\./([a-zA-Z0-9_-]+/?)+$ ]];then
     MNT_BASE_VOL=${workspace}/data/${BASE_VOL:2}
+    MNT_BASE_DIR=$MNT_BASE_VOL
   elif [[ "$BASE_VOL" =~ ^/([a-zA-Z0-9_-]+/?)+$ ]];then
-    MNT_BASE_VOL=$BASE_VOL
+    if [ "$IS_WIN" = true ];then
+      MNT_BASE_VOL=$BASE_VOL
+    else
+      MNT_BASE_VOL=$BASE_VOL
+    fi
   else
     MNT_BASE_VOL=${workspace}/data/${BASE_VOL}
   fi

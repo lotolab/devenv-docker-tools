@@ -40,3 +40,20 @@ bash bin/mysql.sh -h
 
 ```
 
+### Mysql DB
+
+```sql
+/** DB */
+GRANT ALL privileges on *.* to 'admin'@'%';
+
+
+create database if not exists `loto-db`;
+
+CREATE USER 'lotolab'@'%' IDENTIFIED BY 'loto123';
+
+GRANT select,insert,update,delete,create,index on `loto-db`.* to `lotolab`;
+
+flush privileges;
+```
+
+
