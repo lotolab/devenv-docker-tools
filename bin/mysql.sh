@@ -6,6 +6,7 @@ MYSQL_VERSION=8.0.39
 ENV_FILE=$workspace/.env
 MYSQL_CONF_ENV_FILE=$workspace/.env.mysql8
 MYSQL8_EXPOSE_PORT=3336
+MYSQL_CLUSTER_EXPOSE_PORT=33060
 MYSQL8_BASE_DIR=mysql8
 MYSQL_CONTAINER_NAME=mysql8
 MYSQL8_NETWORK=xy-mysql8
@@ -108,12 +109,12 @@ else
 fi
 
 function prepare_mysql_dirs(){
-  if [[ "$MYSQL_BASE_DIR" =~ ^\./([a-zA-Z0-9_-]+/?)+$ ]];then
-    MNT_BASE_VOL=${workspace}/data/${MYSQL_BASE_DIR:2}
-  elif [[ "$MYSQL_BASE_DIR" =~ ^/([a-zA-Z0-9_-]+/?)+$ ]];then
-    MNT_BASE_VOL=$MYSQL_BASE_DIR
+  if [[ "$MYSQL8_BASE_DIR" =~ ^\./([a-zA-Z0-9_-]+/?)+$ ]];then
+    MNT_BASE_VOL=${workspace}/data/${MYSQL8_BASE_DIR:2}
+  elif [[ "$MYSQL8_BASE_DIR" =~ ^/([a-zA-Z0-9_-]+/?)+$ ]];then
+    MNT_BASE_VOL=$MYSQL8_BASE_DIR
   else
-    MNT_BASE_VOL=${workspace}/data/${MYSQL_BASE_DIR}
+    MNT_BASE_VOL=${workspace}/data/${MYSQL8_BASE_DIR}
   fi
   export MNT_BASE_VOL=$MNT_BASE_VOL
 
@@ -143,7 +144,7 @@ function check_networks(){
 
 function run_mysql(){
   echo -e "\033[31m✨✨✨Start install ${MYSQL_CONTAINER_NAME}... \033[0m"
-  docker run -td -p ${MYSQL8_EXPOSE_PORT}:3306 \
+  docker run -td -p ${MYSQL8_EXPOSE_PORT}:3306 -p ${MYSQL_CLUSTER_EXPOSE_PORT}:33060 \
     --env-file=${MYSQL_CONF_ENV_FILE} --net=${MYSQL8_NETWORK} \
     -v ${MNT_BASE_VOL}/data:/var/lib/mysql \
     -v ${MNT_BASE_VOL}/log:/var/log/mysql \

@@ -37,5 +37,6 @@ TZ=Asia/Shanghai
 ```bash
 bash bin/mysql.sh -h
 
+
 ```
 
