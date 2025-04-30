@@ -184,7 +184,7 @@ function pull_image(){
 
   fullImageName=${REPO_HOST}/${PULL_IMAGE_NAME}:${IMG_VERSION}
 
-  echo -e ">>>>> ${fullImageName}"
+  # echo -e ">>>>> ${fullImageName}"
   docker pull $fullImageName
 }
 
